@@ -1,7 +1,6 @@
 class Battle < ActiveRecord::Base
   belongs_to :pokemon
   belongs_to :trainer
-  belongs_to :location
 
   # ========================================================================
   # Trainer's pokemon

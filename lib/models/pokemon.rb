@@ -1,4 +1,4 @@
 class Pokemon < ActiveRecord::Base
-  has_many :trainers
+  belongs_to :location
   has_many :battles
 end
