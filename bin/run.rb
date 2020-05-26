@@ -1,3 +1,8 @@
 require_relative '../config/environment'
 
-puts "hello world"
+interface = Interface.new()
+interface.greet
+current_trainer = interface.choose_new_trainer_or_check_inventory
+interface.user = current_trainer[:trainer]
+current_trainer[:isItNew] == true ? interface.welcome_newbie : interface.welcome_back
+
