@@ -8,13 +8,19 @@ Location.destroy_all
 
 location1 = Location.create(town_name: Faker::Games::Pokemon.location)
 
-poke1 = Pokemon.create(name: Faker::Games::Pokemon.name, location_id: location1.id)
-poke2 = Pokemon.create(name: Faker::Games::Pokemon.name, location_id: location1.id)
-poke3 = Pokemon.create(name: Faker::Games::Pokemon.name, location_id: location1.id)
+3.times do 
+  Pokemon.create(
+  name: Faker::Games::Pokemon.name, 
+  attack: rand(3..12),
+  defense: rand(3..12),
+  hp: 30,
+  location_id: location1.id
+)
+end
 
-trainer1 = Trainer.create(name: "Anastasia", pokemon_id: poke3.id)
+# trainer1 = Trainer.create(name: "Anastasia", pokemon_id: poke3.id)
 
-battle1 = Battle.create(pokemon_id: poke1.id, trainer_id: trainer1.id)
+# battle1 = Battle.create(pokemon_id: poke1.id, trainer_id: trainer1.id)
 
 
 
