@@ -1,5 +1,5 @@
 class Interface 
-  attr_accessor :prompt, :user
+  attr_accessor :prompt, :user, :current_user_location
   @@trainer_pepTalk = ["Go catch them all!", "It's great to see you again."]
   @@newbie_pepTalk = ["I hope you know what you're doing.", "Are you still there? ...chop chop... the time is ticking!", "Don't waste your time. You got work to do."]
 
@@ -40,10 +40,16 @@ class Interface
 
   def welcome_back
     puts "Welcome back, #{user.name}! #{@@trainer_pepTalk.sample}"
+    current_user_location = self.trainer_chooses_town
+    self.main_menu
   end
 
   def welcome_newbie
     puts "Welcome to the game, #{user.name}! #{@@newbie_pepTalk.sample}"
+    user.pokemon = self.trainer_chooses_pokemon
+    user.save
+    current_user_location = self.trainer_chooses_town
+    self.main_menu
   end
 
   def trainer_chooses_pokemon
@@ -59,8 +65,20 @@ class Interface
   end
 
   def main_menu
-    self.trainer_chooses_pokemon
-    self.trainer_chooses_town
+    # MAIN MENY GENERIC OPTIONS
+    # 1) CHECK USER'S SCORES
+    # 2) EDIT POKEMONS
+    # 3) START EXPLORING => start_exploring
+    puts "DISPLAY OTHER OPTIONS"
+    
+    # binding.pry
+    # self.animation
   end
+
+  def start_exploring
+    # START EXPLORING TOWNS
+    # SHOW OTHER POKEMONS TO USER
+  end
+
 
 end
