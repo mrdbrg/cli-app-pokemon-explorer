@@ -87,10 +87,25 @@ class Interface
    if choice == "LET'S BATTLE!"
    puts "POKEMONS ARE BATTLING "
    elsif choice == "No, I don't want to"
-  puts "YOU RUN AWAY"
-
+  self.no_battle
    end 
+  end 
 
+  def no_battle 
+    battle_choice = prompt.select("Would you like to continue exploring this town?", ["Yes plz!", "No, I want to visit another town!"]) 
+    if battle_choice == "Yes plz!"
+      self.start_exploring
+    elsif battle_choice == "No, I want to visit another town!"
+      puts "GO BACK TO CHOOSE THE TOWN"
+    end
+  end 
+
+  def yes_battle
+    #compare
+    self.find_wild_pokemon 
+    self.user.pokemon
+    #BATTLE HAPPENS
+    #Battle.new 
   end 
 
   def start_exploring
@@ -107,7 +122,7 @@ class Interface
     puts "YOU FOUND A POKEMON #{self.find_wild_pokemon.name}!"
     puts ""
     puts "==================================================="
-    # self.start_battle
+    self.start_battle
   end
 
 end
