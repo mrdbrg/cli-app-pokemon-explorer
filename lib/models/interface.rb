@@ -77,16 +77,21 @@ class Interface
   end
 
   def find_wild_pokemon
-    puts "==================================================="
-    puts "YOU FOUND A POKEMON!!!!!"
-    puts "==================================================="
-    # WE WANT TO FIND A WILD RANDOM POKEMON FROM THE DATABASE
-    # WE ARE GOING TO USE ACTIVERECORD METHODS TO RETRIEVE POKEMON FROM A SPECIFIC LOCATION
-    # LOCATION EQUALS TO THE POKEMON FROM THAT LOCATION 
-                # => self.user_current_location.town_name
-                # => Pokemon.all.sample 
-    # binding.pry
+    
+    Pokemon.all.where(location_id: self.user_current_location.id).sample
+    
   end
+
+  def start_battle
+   choice = prompt.select("WANNA FIGHT? ", ["LET'S BATTLE!", "No, I don't want to"]) 
+   if choice == "LET'S BATTLE!"
+   puts "POKEMONS ARE BATTLING "
+   elsif choice == "No, I don't want to"
+  puts "YOU RUN AWAY"
+
+   end 
+
+  end 
 
   def start_exploring
     # START EXPLORING TOWN
@@ -95,9 +100,14 @@ class Interface
     puts "Welcome to #{self.user_current_location.town_name}!"
     puts ""
     puts "==================================================="
-    # sleep 3
+   sleep 3
     # SHOW OTHER POKEMONS TO USER
-    self.find_wild_pokemon
+    puts "==================================================="
+    puts ""
+    puts "YOU FOUND A POKEMON #{self.find_wild_pokemon.name}!"
+    puts ""
+    puts "==================================================="
+    # self.start_battle
   end
 
 end
