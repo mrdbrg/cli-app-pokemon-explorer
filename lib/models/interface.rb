@@ -46,3 +46,7 @@ class Interface
     puts "Welcome to the game, #{user.name}! #{@@newbie_pepTalk.sample}"
   end
 end
+
+
+
+
