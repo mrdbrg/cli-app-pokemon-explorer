@@ -3,18 +3,27 @@ Trainer.destroy_all
 Battle.destroy_all
 Location.destroy_all
 
-# Faker::Name.name  
-# Faker::Games::Pokemon.name 
+["Pallet Town", "Celadon City", "Viridian City", "Vermilion City"].each do |town|
+   Location.create(town_name: town)
+end 
 
-location1 = Location.create(town_name: Faker::Games::Pokemon.location)
-
-3.times do 
+["Charmander", "Bulbasaur", "Squirtle"].each do |pokemon|
   Pokemon.create(
-  name: Faker::Games::Pokemon.name, 
+  name: pokemon, 
   attack: rand(3..12),
   defense: rand(3..12),
   hp: 30,
-  location_id: location1.id
+  location: Location.find_by(town_name: "Pallet Town")
+)
+end  
+
+10.times do 
+  Pokemon.create(
+  name: Faker::Games::Pokemon.name, 
+  attack: rand(3..12),
+  defense: rand(4..16),
+  hp: 30,
+  location: Location.where.not(town_name: "Pallet Town").sample
 )
 end
 

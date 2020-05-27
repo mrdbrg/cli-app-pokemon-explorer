@@ -45,4 +45,22 @@ class Interface
   def welcome_newbie
     puts "Welcome to the game, #{user.name}! #{@@newbie_pepTalk.sample}"
   end
+
+  def trainer_chooses_pokemon
+    poke_choices =  {"Fire" => "Charmander", "Grass" => "Bulbasaur", "Water" => "Squirtle"}
+    type_choice = prompt.select("Time to choose ", poke_choices.keys) 
+    Pokemon.find_by(name: poke_choices[type_choice])
+  end
+
+  def trainer_chooses_town
+    town_choices = Location.where.not(town_name: "Pallet Town").map {|town| town.town_name}
+    choice = prompt.select("Please, choose your location!", town_choices) 
+    Location.find_by(town_name: choice)
+  end
+
+  def main_menu
+    self.trainer_chooses_pokemon
+    self.trainer_chooses_town
+  end
+
 end
