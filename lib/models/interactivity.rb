@@ -28,6 +28,8 @@ class Interactivity
     print "."
     sleep(0.5)
     print "."
+    sleep(0.5)
+    print "."
     print "\n"
   end
 

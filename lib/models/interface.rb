@@ -22,12 +22,12 @@ class Interface
         ==                                                                            ==
         ================================================================================
         "
-        answer = prompt.select(main_menu_msg, ["Check Inventory", "New Trainer"])
+        answer = prompt.select(main_menu_msg, ["Manage Inventory", "New Trainer", "Quit"])
         trainer_info = {
             trainer: nil,
             isItNew: true
         }
-        if answer == "Check Inventory"
+        if answer == "Manage Inventory"
             current_trainer = Trainer.login_trainer
             trainer_info[:trainer] = current_trainer
             trainer_info[:isItNew] = false
@@ -36,20 +36,24 @@ class Interface
             new_trainer = Trainer.new_trainer
             trainer_info[:trainer] = new_trainer
             trainer_info
+        else
+            puts "Goodbye"
         end
     end
 
     def welcome_back
         puts "Welcome back, #{user.name}! #{@@trainer_pepTalk.sample}"
-        self.trainer_chooses_town
         self.main_menu
+        # self.trainer_chooses_town
+    
     end
 
     def welcome_newbie
         puts "Welcome to the game, #{user.name}! #{@@newbie_pepTalk.sample}"
-        self.trainer_chooses_pokemon
-        self.trainer_chooses_town
         self.main_menu
+        # self.trainer_chooses_pokemon
+        # self.trainer_chooses_town
+        
     end
 
     def trainer_chooses_pokemon
@@ -61,20 +65,28 @@ class Interface
 
     def trainer_chooses_town
         town_choices = Location.where.not(town_name: "Pallet Town").map {|town| town.town_name}
-        choice = prompt.select("Please, choose your location!", town_choices) 
+        menu_options = "Which town would you like to explore first?"
+        if self.user_current_location
+            town_choices.push("Check Score")
+            menu_options = "Would you like to explore more or check your score?"
+        end
+    
+        choice = prompt.select(menu_options, town_choices) 
         self.user_current_location = Location.find_by(town_name: choice)
     end
 
     def main_menu
-        # MAIN MENY GENERIC OPTIONS
-        # 1) CHECK USER'S SCORES
-        # 2) EDIT POKEMONS
-        # 3) START EXPLORING => exploring_town
-        self.exploring_town
-        puts "DISPLAY OTHER OPTIONS"
-
-        # binding.pry
-        # self.animation
+        options = ["Start Exploring", "Check Inventory", "Check Score"]
+        choice = prompt.select("What would you like to do?", options) 
+        
+        if choice == "Start Exploring"
+            self.trainer_chooses_town
+            self.exploring_town
+        elsif choice == "Check Inventory"
+            puts "MANAGE INVENTORY - CHANGE POKEMONS AROUND"
+        else
+            puts "CHECK YOUR SCORE"
+        end
     end
 
     def find_wild_pokemon
@@ -82,15 +94,15 @@ class Interface
     end
 
     def start_battle
-        choice = prompt.select("Would you like to fight #{find_wild_pokemon}?", ["Yes, Let's BATTLE!", "No, I don't want to"]) 
+        choice = prompt.select("Would you like to fight #{find_wild_pokemon.name}?", ["Yes, Let's BATTLE!", "No, I don't wanna battle."]) 
         if choice == "Yes, Let's BATTLE!"
-            puts "POKEMONS ARE BATTLING "
-        elsif choice == "No, I don't want to"
-            self.no_battle    
+            puts "RUNS BATTLE LOGIC FUNCTION"
+        elsif choice == "No, I don't wanna battle."
+            self.trainer_chooses_town   
         end 
     end 
 
-    def no_battle 
+    def refuses_battle 
         options = ["Yes, I wanna keep exploring.", "No, I want to visit another town!"]
         battle_choice = prompt.select("Would you like to continue exploring this town?", options) 
         if battle_choice == "Yes, I wanna keep exploring."
@@ -100,7 +112,7 @@ class Interface
         end
     end 
 
-    def yes_battle
+    def accepts_battle
         #compare
         self.find_wild_pokemon 
         self.user.pokemon
