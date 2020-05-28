@@ -1,8 +1,8 @@
 class Interactivity
 
   @@legendary = ["Moltres", "Zaptos", "Articuno"]
-  @@walking_in_town = ["Walking in town", "is that a pokemon?", "No Pokemons here...", "grrr... I'm hungry! ", "WoW... was that an Articuno?!", "Oh no, it's that Gary guy!"]
-  @@walking_in_town_response = ["or here...", "Nope!"]
+  @@walking_in_town = ["Walking in town", "is that a pokemon?", "No Pokemons here...", "grrr... I'm hungry! ", "WoW... was that an Articuno?!", "WoW... was that an Zaptos?!", "Oh no, it's that Gary guy!"]
+  @@walking_in_town_response = ["or here...", "I don't think so."]
 
   def self.welcome_to_town(user)
     puts "==================================================="
