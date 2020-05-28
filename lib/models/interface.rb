@@ -8,9 +8,11 @@ class Interface
         @prompt = TTY::Prompt.new
     end
 
-    def greet
-        puts "Welcome to the Pokemon world!"
-    end
+    # ===========================================================================================
+    # ====                                                                                   ====
+    # ====                              LOGIN SECTION                                        ====
+    # ====                                                                                   ====
+    # ===========================================================================================
 
     def choose_new_trainer_or_check_inventory
         main_menu_msg = "
@@ -39,6 +41,16 @@ class Interface
         else
             puts "Goodbye"
         end
+    end 
+
+    # ===========================================================================================
+    # ====                                                                                   ====
+    # ====                              WELCOME SECTION                                      ====
+    # ====                                                                                   ====
+    # ===========================================================================================
+
+    def greet
+        puts "Welcome to the Pokemon world!"
     end
 
     def welcome_back
@@ -56,24 +68,11 @@ class Interface
         
     end
 
-    def trainer_chooses_pokemon
-        poke_choices =  {"Fire" => "Charmander", "Grass" => "Bulbasaur", "Water" => "Squirtle"}
-        type_choice = prompt.select("Time to choose ", poke_choices.keys) 
-        user.pokemon = Pokemon.find_by(name: poke_choices[type_choice])
-        user.save
-    end
-
-    def trainer_chooses_town
-        town_choices = Location.where.not(town_name: "Pallet Town").map {|town| town.town_name}
-        menu_options = "Which town would you like to explore first?"
-        if self.user_current_location
-            town_choices.push("Check Score")
-            menu_options = "Would you like to explore more or check your score?"
-        end
-    
-        choice = prompt.select(menu_options, town_choices) 
-        self.user_current_location = Location.find_by(town_name: choice)
-    end
+    # ===========================================================================================
+    # ====                                                                                   ====
+    # ====                      MAIN MENU / TRAINER CHOICES SECTION                          ====
+    # ====                                                                                   ====
+    # ===========================================================================================
 
     def main_menu
         options = ["Start Exploring", "Check Inventory", "Check Score"]
@@ -87,11 +86,60 @@ class Interface
         else
             puts "CHECK YOUR SCORE"
         end
+    end 
+
+    # ===========================================================================================
+    # ====                                CHOOSE POKEMON                                     ====
+    # ===========================================================================================
+
+    def trainer_chooses_pokemon
+        poke_choices =  {"Fire" => "Charmander", "Grass" => "Bulbasaur", "Water" => "Squirtle"}
+        type_choice = prompt.select("Time to choose ", poke_choices.keys) 
+        user.pokemon = Pokemon.find_by(name: poke_choices[type_choice])
+        user.save
     end
+
+    # ===========================================================================================
+    # ====                                  CHOOSE TOWN                                      ====
+    # ===========================================================================================
+
+    def trainer_chooses_town
+        town_choices = Location.where.not(town_name: "Pallet Town").map {|town| town.town_name}
+        menu_options = "Which town would you like to explore first?"
+        if self.user_current_location
+            town_choices.push("Check Score")
+            menu_options = "Would you like to explore more or check your score?"
+        end
+    
+        choice = prompt.select(menu_options, town_choices) 
+        self.user_current_location = Location.find_by(town_name: choice)
+    end
+
+    # ===========================================================================================
+    # ====                                                                                   ====
+    # ====                           EXPLORING TOWN SECTION                                  ====
+    # ====                                                                                   ====
+    # ===========================================================================================
 
     def find_wild_pokemon
         Pokemon.all.where(location_id: self.user_current_location.id).sample
     end
+
+    def exploring_town
+        if @@isItInTown != true
+            Interactivity.welcome_to_town(user_current_location)
+            @@isItInTown = true
+        end
+        Interactivity.walking_in_town
+        Interactivity.found_pokemon(find_wild_pokemon)
+        self.start_battle
+    end
+
+    # ===========================================================================================
+    # ====                                                                                   ====
+    # ====                               BATTLE SECTION                                      ====
+    # ====                                                                                   ====
+    # ===========================================================================================
 
     def start_battle
         choice = prompt.select("Would you like to fight #{find_wild_pokemon.name}?", ["Yes, Let's BATTLE!", "No, I don't wanna battle."]) 
@@ -112,21 +160,51 @@ class Interface
         end
     end 
 
-    def accepts_battle
-        #compare
-        self.find_wild_pokemon 
-        self.user.pokemon
-        #BATTLE HAPPENS
-        #Battle.new 
-    end 
+    self.find_wild_pokemon 
+    self.user.pokemon
 
-    def exploring_town
-        if @@isItInTown != true
-            Interactivity.welcome_to_town(user_current_location)
-            @@isItInTown = true
+    def accepts_battle
+        user_pokemon = self.user.pokemon
+        wild_pokemon = self.find_wild_pokemon
+      
+        while user_pokemon.hp > 0 && wild_pokemon.hp > 0
+          if user_pokemon.attack > wild_pokemon.attack
+            puts "You got the upper hand!"
+            self.battling(wild_pokemon, user_pokemon)
+          else
+            # binding.pry
+            puts "This is gonna be tough!"
+            self.battling(user_pokemon, wild_pokemon)
+          end
         end
-        Interactivity.walking_in_town
-        Interactivity.found_pokemon(find_wild_pokemon)
-        self.start_battle
+    end 
+  
+    def battling(lowerhand, upperhand)
+        small_defense = ["Nice, dodge!!", "Easy Peasy", "It's your chance... counter attack!", "Wait for the right moment... now!", "That tickled"]
+        greater_defense = [ "Nice, dodge!!", "That's tough, but we can handle it!", "Counter attack!! Counter attack!!", "Don't give up!", "You got hit really hard.", "Be careful!"]
+
+        while lowerhand.hp > 0 && upperhand.hp > 0
+            sleep 1
+            if upperhand.defense > lowerhand.defense
+                puts small_defense.sample
+                if lowerhand.hp > 10 
+                    lowerhand.hp -= 10 
+                    upperhand.hp -= 2
+                elsif  
+                    lowerhand.hp = 0 
+                end
+            else
+                puts greater_defense.sample
+                if lowerhand.hp > 5 
+                    lowerhand.hp -= 5 
+                    upperhand.hp -= 2
+                elsif 
+                    lowerhand.hp = 0 
+                end 
+            end
+        end 
+        if lowerhand.hp = 0
+            puts "#{upperhand.name} WON!"
+        end 
     end
 end
