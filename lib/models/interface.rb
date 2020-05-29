@@ -16,6 +16,8 @@ class Interface
     # ===========================================================================================
 
     def choose_new_trainer_or_check_inventory
+        Interactivity.animation_intro
+        Interactivity.logo
         answer = prompt.select(Interactivity.login_or_sign_up_menu_msg, ["Manage Inventory", "New Trainer", "Quit"])
         trainer_info = {
             trainer: nil,
@@ -203,7 +205,7 @@ class Interface
             user.wins = 0 if user.wins == nil
             user.wins+=1
             user.save
-            binding.pry
+            # binding.pry
             Battle.create(pokemon_id: losing_side.id, trainer_id: user.id)
             self.keep_exploring?
         end
@@ -213,7 +215,7 @@ class Interface
         user.loses+=1
         user.save
         Battle.create(pokemon_id: upperhand.id, trainer_id: losing_side.id)
-        binding.pry
+        # binding.pry
         go_to_pokemon_center?
     end
 
