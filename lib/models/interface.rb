@@ -57,21 +57,17 @@ class Interface
     # ===========================================================================================
 
     def main_menu
-        menu_options = ["Start exploring", "Check Inventory", "Check Your Score", "Quit"]
+        menu_options = ["Start exploring", "Check Inventory", "Check Your Score", "Go to Pokemon Center", "Quit"]
         menu_prompt = Interactivity.mainMenu 
-
-        if user.pokemon.hp < 30
-            menu_options.pop()
-            menu_options.push("Go to Pokemon Center")
-            menu_options.push("Quit")
+        
+        if user.pokemon == nil
+            menu_options.shift()
+            menu_options.unshift("Choose a Pokemon and start exploring")
         elsif self.user_current_location
             menu_options.shift()
             menu_options.unshift("Keep Exploring")
-        elsif user.pokemon == nil
-            menu_options.shift()
-            menu_options.unshift("Choose a Pokemon and start exploring")
         end
-        # slice
+        
         choice = prompt.select(menu_prompt, menu_options) 
         if choice == "Start exploring" || choice == "Choose a Pokemon and start exploring" || choice == "Keep Exploring"
             self.trainer_chooses_pokemon if user.pokemon == nil 
@@ -150,9 +146,12 @@ class Interface
     # ===========================================================================================
 
     def start_battle
+        self.go_to_pokemon_center? if user.pokemon.hp == 0
         choice = prompt.select(Interactivity.fightPokemon?(@@wild_pokemon.name), ["Let's BATTLE!", "No, I don't wanna battle."]) 
         if choice == "Let's BATTLE!"
+            # binding.pry
             self.accepts_battle
+            # binding.pry
         elsif choice == "No, I don't wanna battle."
             self.keep_exploring?  
         end 
@@ -163,7 +162,7 @@ class Interface
         user_pokemon = self.user.pokemon
 
         while user_pokemon.hp > 0 && @@wild_pokemon.hp > 0
-          if user_pokemon.attack > @@wild_pokemon.attack
+          if user_pokemon.attack >= @@wild_pokemon.attack
             puts win_or_lose.sample
             self.battling(@@wild_pokemon, user_pokemon)
           else
@@ -179,7 +178,7 @@ class Interface
 
         while losing_side.hp > 0 && upperhand.hp > 0
             sleep 0.5
-            if upperhand.defense > losing_side.defense
+            if upperhand.defense >= losing_side.defense
                 puts weak_defense.sample
                 if losing_side.hp > 10 
                     losing_side.hp -= 10 
@@ -199,15 +198,26 @@ class Interface
                 end 
             end
         end 
-        if losing_side.hp == 0
-            Interactivity.youWon(upperhand.name)
-            # Battle.create(pokemon_id: losing_side.id, trainer_id: user.id)
+        if losing_side != user.pokemon && losing_side.hp == 0
+            Interactivity.winner(upperhand.name)
+            user.wins = 0 if user.wins == nil
+            user.wins+=1
+            user.save
+            binding.pry
+            Battle.create(pokemon_id: losing_side.id, trainer_id: user.id)
             self.keep_exploring?
-        end 
+        end
+        Interactivity.winner(upperhand.name)
+        Interactivity.youLost
+        user.loses = 0 if user.loses == nil
+        user.loses+=1
+        user.save
+        Battle.create(pokemon_id: upperhand.id, trainer_id: losing_side.id)
+        binding.pry
+        go_to_pokemon_center?
     end
 
     def go_to_pokemon_center?
-        Interactivity.youLost
         choices = ["Yes, take me to the nearest Pokemon Center!", "No, let's just go home"]
         menu_prompt = Interactivity.needsHelp
         choice = prompt.select(menu_prompt, choices) 
@@ -225,6 +235,7 @@ class Interface
         else
             Interactivity.welcome_pokemon_center
             choices = ["My Pokemon isn't feeling well.", "Manage inventory", "It's fine. I changed my mind.", "Hey, do I know you?"]
+            choices.shift() if user.pokemon.hp == 30
             if user.pokemon.hp == 0
                 choices.shift()
                 choices.unshift("Yes, please! * Hang in there buddy! *")

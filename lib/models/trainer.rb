@@ -4,7 +4,6 @@ class Trainer < ActiveRecord::Base
   has_many :pokemons, through: :battles
 
   def self.new_trainer
-
     prompt = TTY::Prompt.new
     user_input = prompt.select(Interactivity.greeting_newbie, ["Yes, I do.", "Of course. I will prove it to you!", "I changed my mind."])
     if user_input == "Yes, I do."

@@ -202,7 +202,19 @@ class Interactivity
   end
 
   def self.timing(poke_center=nil)
-    poke_center == true ? pass_time = "+" : pass_time = "." 
+    if poke_center == true 
+      pass_time = "+++++"
+      medicine = "
+      ......
+      :.  .:
+      .'  '.
+      |    |
+      |    |
+      `----'"
+    else
+      pass_time = "."
+    end
+    puts medicine if true
     sleep(0.5)
     print pass_time
     sleep(0.5)
@@ -238,14 +250,14 @@ class Interactivity
     end
   end   
 
-  def self.youWon(pokemon)
+  def self.winner(pokemon)
   puts "\n\n
     M O O * * M O O * * M O O * * MM O O * * M O O * * M O O * * M O O * * M O O * * M O O             
         O O * M O O * * M O O * * MM O O * * M O O * * M O O * * M O O * * M O * * O
               M O O * * M O O * * M O O * * MM O O * * M O O * * M O O * * M
 
 
-                                  YOUR #{pokemon.upcase} WON !!
+                                        #{pokemon.upcase} WON !!
 
 
               M O O * * M O O * * M O O * * MM O O * * M O O * * M O O * * M
