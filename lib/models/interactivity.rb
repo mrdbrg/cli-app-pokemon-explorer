@@ -1,8 +1,8 @@
 class Interactivity
 
   @@legendary = ["Moltres", "Zaptos", "Articuno"]
-  @@walking_in_town = ["Walking in town", "is that a pokemon?", "No Pokemons here...", "grrr... I'm hungry! ", "WoW... was that an Articuno?!", "WoW... was that an Zaptos?!", "Oh no, it's that Gary guy!"]
-  @@walking_in_town_response = ["or here...", "I don't think so."]
+  @@walking_in_town = ["Walking in town", "is that a pokemon?", "No Pokemons here...", "grrr... I'm hungry! ", "WoW... was that an Articuno?!", "WoW... was that an Zaptos?!", "Uh-oh, it's that guy again!", "** humming Pokemon theme song **"]
+  @@walking_in_town_response = ["or here.", "I don't think so."]
 
   def self.welcome_to_town(user)
     puts "==================================================="
@@ -21,20 +21,22 @@ class Interactivity
   end
 
   # Why does .timing have to be a class method and not simply a instance method ???
-  def self.timing
+  def self.timing(poke_center=nil)
+    poke_center == true ? pass_time = "+" : pass_time = "." 
     sleep(0.5)
-    print "."
+    print pass_time
     sleep(0.5)
-    print "."
+    print pass_time
     sleep(0.5)
-    print "."
+    print pass_time
     sleep(0.5)
-    print "."
+    print pass_time
     print "\n"
   end
 
   def self.walking_in_town
     legends = []
+
     rand(2..4).times do 
     phrase = @@walking_in_town.sample
 
