@@ -149,9 +149,7 @@ class Interface
         self.go_to_pokemon_center? if user.pokemon.hp == 0
         choice = prompt.select(Interactivity.fightPokemon?(@@wild_pokemon.name), ["Let's BATTLE!", "No, I don't wanna battle."]) 
         if choice == "Let's BATTLE!"
-            # binding.pry
             self.accepts_battle
-            # binding.pry
         elsif choice == "No, I don't wanna battle."
             self.keep_exploring?  
         end 
@@ -203,7 +201,6 @@ class Interface
             user.wins = 0 if user.wins == nil
             user.wins+=1
             user.save
-            binding.pry
             Battle.create(pokemon_id: losing_side.id, trainer_id: user.id)
             self.keep_exploring?
         end
@@ -213,7 +210,6 @@ class Interface
         user.loses+=1
         user.save
         Battle.create(pokemon_id: upperhand.id, trainer_id: losing_side.id)
-        binding.pry
         go_to_pokemon_center?
     end
 
