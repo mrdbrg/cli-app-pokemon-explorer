@@ -42,7 +42,7 @@ class Interface
     # ===========================================================================================
 
     def greet
-        puts "Welcome to the Pokemon world!"
+        Interactivity.logo
     end
 
     def welcome(bool)
