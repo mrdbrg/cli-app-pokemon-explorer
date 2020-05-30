@@ -198,18 +198,10 @@ class Interface
         end 
         if losing_side != user.pokemon && losing_side.hp == 0
             Interactivity.winner(upperhand.name)
-            user.wins = 0 if user.wins == nil
-            user.wins+=1
-            user.save
-            Battle.create(pokemon_id: losing_side.id, trainer_id: user.id)
             self.keep_exploring?
         end
         Interactivity.winner(upperhand.name)
         Interactivity.youLost
-        user.loses = 0 if user.loses == nil
-        user.loses+=1
-        user.save
-        Battle.create(pokemon_id: upperhand.id, trainer_id: losing_side.id)
         go_to_pokemon_center?
     end
 
