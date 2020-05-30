@@ -2,6 +2,8 @@ class Battle < ActiveRecord::Base
   belongs_to :pokemon
   belongs_to :trainer
 
+
+
   # ========================================================================
   # Trainer's pokemon
   # Battle.first.trainer.pokemons.first

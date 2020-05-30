@@ -10,30 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_25_213542) do
-
-  create_table "battles", force: :cascade do |t|
-    t.integer "pokemon_id"
-    t.integer "trainer_id"
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string "town_name"
-  end
-
-  create_table "pokemons", force: :cascade do |t|
-    t.string "name"
-    t.integer "attack"
-    t.integer "defense"
-    t.integer "hp"
-    t.integer "location_id"
-  end
-
-  create_table "trainers", force: :cascade do |t|
-    t.string "name"
-    t.integer "pokemon_id"
-    t.integer "wins"
-    t.integer "loses"
-  end
+ActiveRecord::Schema.define(version: 0) do
 
 end

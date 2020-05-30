@@ -11,7 +11,7 @@ class Interactivity
   # ===========================================================================================
 
   def self.animation_intro
-    6.times do #however many times you want it to go for
+    5.times do #however many times you want it to go for
       i = 1
       while i < 14 #20 gif instances starting from 0
       print "\033[2J" 
@@ -24,7 +24,7 @@ class Interactivity
 
   def self.logo
     sleep 2
- puts" \n\n      
+ puts" \n\n\n\n      
           ██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗
           ██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║
           ██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║██║   ██║██╔██╗ ██║
@@ -32,7 +32,7 @@ class Interactivity
           ██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║
           ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝".colorize(:blue)
 
-                                         sleep 1
+                                         sleep 0.5
 
                                            puts "\n\n  
                                               ███████╗██╗  ██╗██████╗ ██╗      ██████╗ ██████╗ ███████╗██████╗ 
@@ -40,7 +40,7 @@ class Interactivity
                                               █████╗   ╚███╔╝ ██████╔╝██║     ██║   ██║██████╔╝█████╗  ██████╔╝
                                               ██╔══╝   ██╔██╗ ██╔═══╝ ██║     ██║   ██║██╔══██╗██╔══╝  ██╔══██╗
                                               ███████╗██╔╝ ██╗██║     ███████╗╚██████╔╝██║  ██║███████╗██║  ██║ 
-                                              ╚══════╝╚═╝  ╚═╝╚═╝     ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ \n\n".colorize(:red)
+                                              ╚══════╝╚═╝  ╚═╝╚═╝     ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ \n\n\n\n".colorize(:red)
 
                                               sleep 2    
   end 
@@ -238,7 +238,7 @@ class Interactivity
 
   def self.timing(poke_center=nil)
     if poke_center == true 
-      pass_time = "+++++"
+      pass_time = "++++"
       medicine = "
       ......
       :.  .:
@@ -247,7 +247,7 @@ class Interactivity
       |    |
       `----'"
     else
-      pass_time = "."
+      pass_time = " ◓"
     end
     puts medicine if true
     sleep(0.5)
@@ -258,7 +258,7 @@ class Interactivity
     print pass_time
     sleep(0.5)
     print pass_time
-    print "\n"
+    print "\n\n"
   end
 
   def self.walking_in_town
@@ -275,13 +275,13 @@ class Interactivity
       legends.push(@@legendary.find { |leg| phrase[leg] })
     end
     elsif phrase == "No Pokemons here..."
-      # timing
+      timing
       puts @@walking_in_town_response[0]
     elsif phrase == "is that a pokemon?"
-      # timing
+      timing
       puts @@walking_in_town_response[1]
     end
-      # timing
+      timing
     end
   end   
 
