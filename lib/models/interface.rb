@@ -90,7 +90,8 @@ class Interface
 
     def trainer_chooses_pokemon
         choose_pokemon =  {"Fire" => "Charmander", "Grass" => "Bulbasaur", "Water" => "Squirtle"}
-        type_choice = prompt.select("Time to choose ", choose_pokemon.keys) 
+        type_choice = prompt.select(Interactivity.choose_pokemon, choose_pokemon.keys) 
+        Interactivity.no_turning_back
         user.pokemon = Pokemon.find_by(name: choose_pokemon[type_choice])
         user.save
     end
@@ -100,10 +101,8 @@ class Interface
     # ===========================================================================================
 
     def trainer_chooses_town
-        town_choices = Location.where.not(town_name: "Pallet Town").map {|town| town.town_name}
-        menu_prompt = "Which town would you like to explore?"
-    
-        choice = prompt.select(menu_prompt, town_choices) 
+        town_choices = Location.where.not(town_name: "Pallet Town").map {|town| town.town_name}    
+        choice = prompt.select(Interactivity.choose_town, town_choices) 
         self.user_current_location = Location.find_by(town_name: choice)
     end
 

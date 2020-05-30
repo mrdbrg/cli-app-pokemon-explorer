@@ -7,12 +7,15 @@ class Trainer < ActiveRecord::Base
     prompt = TTY::Prompt.new
     user_input = prompt.select(Interactivity.greeting_newbie, ["Yes, I do.", "Of course. I will prove it to you!", "I changed my mind."])
     if user_input == "Yes, I do."
+      sleep(1)
       Interactivity.newbie_greeting_intrigued
       self.ask_name_and_create_trainer
     elsif user_input == "Of course. I will prove it to you!"
+      sleep(1)
       Interactivity.newbie_greeting_arrogant
       self.ask_name_and_create_trainer
     elsif user_input == "I changed my mind."
+      sleep(1)
       Interactivity.newbie_greeting_gave_up
     end
   end
